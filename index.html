@@ -5,24 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Hacked portal — AR.js + GLSL</title>
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <!-- Synchronous: ES modules can load after the scene inits → shader missing / pink material -->
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.8/aframe/build/aframe-ar.js"></script>
   <script src="index.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+    }
+    .ar-root {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .ar-root > a-scene {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* Video must fill the scene box; geo mode often breaks without GPS — use marker + best */
+    .ar-root video,
+    a-scene video,
+    body > video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* WebGL canvas: size only — no object-fit */
+    a-scene .a-canvas,
+    a-scene > canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-  <a-scene
-    embedded
-    arjs="sourceType: webcam; trackingMethod: geo; debugUIEnabled: false;"
-    renderer="alpha: true; transparent: true;"
-    vr-mode-ui="enabled: false"
-  >
-    <a-camera gps-camera rotation-reader>
-      <a-entity
-        geometry="primitive: plane; width: 6; height: 6;"
-        position="0 0 -1"
-        material="shader: hacker-intervention; transparent: true; opacity: 1; depthTest: false; depthWrite: false; side: double"
-      ></a-entity>
-    </a-camera>
-  </a-scene>
+<body>
+  <div class="ar-root">
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; trackingMethod: best; debugUIEnabled: false;"
+      renderer="alpha: true; transparent: true; antialias: true;"
+      vr-mode-ui="enabled: false"
+    >
+      <!-- Hiro marker: point camera at https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png -->
+      <a-marker preset="hiro"></a-marker>
+      <a-entity camera>
+        <a-entity
+          geometry="primitive: plane; width: 6; height: 6;"
+          position="0 0 -1"
+          material="shader: hacker-intervention; transparent: true; opacity: 1; depthTest: false; depthWrite: false; side: double; u_grid: 72; u_glitch: 1.15"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+  </div>
 </body>
 </html>
