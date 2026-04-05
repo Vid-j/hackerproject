@@ -1,43 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Hacked portal — AR.js + GLSL</title>
-  <!-- Pinned: A-Frame 1.4.2 + AR.js 3.4.8 (marker + location build; we use marker-only) -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.8/aframe/build/aframe-ar.js"></script>
-  <script src="js/shaders.js"></script>
-  <script src="js/main.js"></script>
-  <style>
-    html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
-  </style>
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <!-- Synchronous: ES modules can load after the scene inits → shader missing / pink material -->
+  <script src="index.js"></script>
 </head>
-<body>
+<body style="margin: 0; overflow: hidden;">
   <a-scene
     embedded
-    arjs="sourceType: webcam; trackingMethod: best; debugUIEnabled: false;"
-    renderer="logarithmicDepthBuffer: true; colorManagement: true;"
-    hacked-portal="intensity: 1"
+    arjs="sourceType: webcam; trackingMethod: geo; debugUIEnabled: false;"
+    renderer="alpha: true; transparent: true;"
     vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
   >
-    <!-- Marker defines world root: Hiro is a public preset anyone can print -->
-    <a-marker preset="hiro" id="world-root">
-      <a-sphere
-        radius="0.15"
-        position="0 0.15 0"
-        material="shader: my-custom-glow; transparent: true; side: double"
-      ></a-sphere>
-      <a-ring
-        radius-inner="0.25"
-        radius-outer="0.28"
-        rotation="-90 0 0"
-        position="0 0.01 0"
-        material="color: #00ffcc; shader: flat; opacity: 0.6; transparent: true"
-      ></a-ring>
-    </a-marker>
-    <a-entity camera></a-entity>
+    <a-camera gps-camera rotation-reader>
+      <a-entity
+        geometry="primitive: plane; width: 6; height: 6;"
+        position="0 0 -1"
+        material="shader: hacker-intervention; transparent: true; opacity: 1; depthTest: false; depthWrite: false; side: double"
+      ></a-entity>
+    </a-camera>
   </a-scene>
 </body>
 </html>
