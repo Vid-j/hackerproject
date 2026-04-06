@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --glitch-green: #00ff41;
+  --glitch-red: #ff0040;
+  --glitch-blue: #0047ff;
+  --glitch-white: #e8e8e8;
+  --bg: #000;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: none;
+}
+
+#video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#glitch-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10;
+}
+
+#ui-layer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 40px; height: 40px;
+  opacity: 0.6;
+}
+.corner-tl { top: 16px; left: 16px; border-top: 1px solid var(--glitch-green); border-left: 1px solid var(--glitch-green); }
+.corner-tr { top: 16px; right: 16px; border-top: 1px solid var(--glitch-green); border-right: 1px solid var(--glitch-green); }
+.corner-bl { bottom: 16px; left: 16px; border-bottom: 1px solid var(--glitch-green); border-left: 1px solid var(--glitch-green); }
+.corner-br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--glitch-green); border-right: 1px solid var(--glitch-green); }
+
+#status-bar {
+  position: absolute;
+  top: 24px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: var(--glitch-green);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  animation: flicker 4s infinite;
+}
+
+#bottom-hud {
+  position: absolute;
+  bottom: 24px; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 24px;
+  font-family: 'VT323', monospace;
+  font-size: 11px;
+  color: var(--glitch-green);
+  letter-spacing: 2px;
+  opacity: 0.5;
+}
+
+#coords {
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+#signal-bars {
+  display: flex; gap: 2px; align-items: flex-end;
+}
+.bar { width: 3px; background: var(--glitch-green); }
+
+#watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'VT323', monospace;
+  font-size: 11vw;
+  color: var(--glitch-red);
+  opacity: 0;
+  letter-spacing: 8px;
+  text-align: center;
+  line-height: 1;
+  pointer-events: none;
+  text-shadow: 2px 0 var(--glitch-blue), -2px 0 var(--glitch-green);
+  animation: watermark-pulse 7s infinite;
+  white-space: nowrap;
+}
+
+#access-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  font-family: 'VT323', monospace;
+  color: var(--glitch-green);
+}
+
+#access-title {
+  font-size: clamp(32px, 8vw, 80px);
+  letter-spacing: 8px;
+  text-align: center;
+  text-shadow: 3px 0 var(--glitch-red), -3px 0 var(--glitch-blue);
+  animation: title-glitch 3s infinite;
+  line-height: 1;
+}
+
+#access-sub {
+  font-size: clamp(12px, 2.5vw, 18px);
+  letter-spacing: 4px;
+  color: #888;
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.8;
+  padding: 0 24px;
+}
+
+#access-btn {
+  font-family: 'VT323', monospace;
+  font-size: clamp(16px, 3vw, 24px);
+  letter-spacing: 6px;
+  color: #000;
+  background: var(--glitch-green);
+  border: none;
+  padding: 12px 40px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.1s;
+  pointer-events: all;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+}
+#access-btn:hover {
+  background: var(--glitch-red);
+  color: #fff;
+  text-shadow: 2px 0 var(--glitch-blue);
+  transform: skewX(-2deg);
+}
+
+#boot-text {
+  font-size: 11px;
+  color: #333;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 2;
+  animation: boot-scroll 10s linear infinite;
+  padding: 0 24px;
+}
+
+#scanline-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  z-index: 30;
+  pointer-events: none;
+}
+
+#vignette {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+  z-index: 29;
+  pointer-events: none;
+}
+
+.hud-line {
+  width: 80px;
+  height: 1px;
+  background: var(--glitch-green);
+  opacity: 0.3;
+  margin: 4px 0;
+}
+
+@keyframes flicker {
+  0%, 94%, 96%, 98%, 100% { opacity: 0.7; }
+  95%, 97% { opacity: 0.1; }
+}
+
+@keyframes watermark-pulse {
+  0%, 85% { opacity: 0; }
+  87% { opacity: 0.15; }
+  89% { opacity: 0; }
+  91% { opacity: 0.08; }
+  93%, 100% { opacity: 0; }
+}
+
+@keyframes title-glitch {
+  0%, 90% { text-shadow: 3px 0 var(--glitch-red), -3px 0 var(--glitch-blue); transform: none; }
+  91% { text-shadow: -4px 0 var(--glitch-red), 4px 0 var(--glitch-blue); transform: skewX(5deg); }
+  92% { text-shadow: 4px 0 var(--glitch-green), -4px 0 var(--glitch-red); transform: skewX(-3deg); }
+  93% { text-shadow: 3px 0 var(--glitch-red), -3px 0 var(--glitch-blue); transform: none; }
+}
+
+@keyframes boot-scroll {
+  0% { color: #222; }
+  50% { color: #444; }
+  100% { color: #222; }
+}
