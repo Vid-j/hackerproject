@@ -1,36 +1,20 @@
-# Hacked portal — AR.js + GLSL
+# Artist statement (brief)
 
-Web AR piece: a **Hiro marker** defines the world root; the **camera feed** is redrawn through a **custom GLSL** chain (chromatic aberration, pixel blocks, scanlines, noise dissolve, subtle vertex warp). A small procedural **marker-world** accent sits on the anchor.
+The Glitched View: Destabilizing Reality Through AR × Shaders
+You already know not to trust this.
+Somewhere between the phishing emails and the "your account has been compromised" popups, you learned it: if something looks broken, close the tab. Don't click. Don't trust it. I'm not trying to undo that reflex. I'm using it. The glitch in this work isn't an accident or an aesthetic choice; it's a trigger, and what it's triggering is something you already know but rarely think about: that every clean, seamless surface you look through is a construction, and constructions can lie.
 
-## Run locally (camera requires HTTPS or localhost)
+The Glitched View is an AR intervention that runs in any browser, on any device, anywhere. No app. No install. It arrives as a link, the same way every scam does,  and when you open it, custom GLSL shaders start corrupting your camera feed in real time. Chromatic splits, scanline decay, pixel tears, frame inversions. The physical world starts to come apart.
+That falling apart is the point.
 
-From this folder:
+McKenzie Wark talks about the vectoral class, the Googles, the Metas, the Apples, as entities that own the pipelines through which we see and move. Their control depends on those pipelines staying invisible. The interface has to feel natural, neutral, like it isn't there. The moment you notice the frame, you start to question what's inside it. So the shader is a hacker move in Wark's sense: it makes the pipeline visible. The camera stops being a window and becomes a managed object. The "seamless AR layer" stops being neutral and starts being something someone built, someone owns, and someone profits from.
 
-```bash
-npx --yes serve -l 8080
-```
+Galloway's writing on protocol adds the technical dimension. The internet isn't free or open; it runs on rules, and those rules shape what can be seen, said, and rendered. The GLSL in this project intercepts the rendering pipeline and breaks those rules deliberately. It tells the pixels to behave incorrectly. The hack isn't a metaphor; it's written directly into the code that normally makes the image "correct."
 
-Open `http://localhost:8080` on your phone or desktop, allow camera access, and point at a **Hiro** marker (print or display on another screen). Official pattern: [AR.js Hiro marker](https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png).
+What I want the viewer to feel is the digital sublime, not the romantic kind, not vastness and mountains, but the specific vertigo of realizing that what you experience as "seeing" is already a render. When the walls in your camera feed start to pixelate and tear, you're briefly touching the mathematical layer that's always been there, always been hidden. That's the awe I'm after. Not wonder at technology, but unease at how deep it already goes.
 
-## Tuning
+The confirmation bias is what I keep coming back to. We were trained to read corrupted interfaces as dangerous, as sites of harm, as things not to trust. This work looks exactly like those things. That's not a coincidence. It looks hacked because it is. And what it's hacking, the smooth, invisible, corporate management of how you see your own environment, I think that deserves to be broken.
 
-Query parameters (optional):
-
-- `?glitch=0.5` — intensity `0`–`2` (default `1`)
-- `?seed=12.3` — shifts noise phases for variation
-
-Example: `http://localhost:8080/?glitch=1.2&seed=3`
-
-## Stack (pinned in `index.html`)
-
-- [A-Frame 1.4.2](https://aframe.io/)
-- [AR.js 3.4.8](https://github.com/AR-js-org/AR.js/) (marker tracking)
-
-## Artist statement (brief)
-
-- **McKenzie Wark**: the intervention treats the live view as a site where **virtuality** (shader logic, compression, glitch) is pushed into the **actual** perceptual field—less a neutral window than a contested surface.
-- **Hito Steyerl**: artifacts are closer to a **poor image** than a pristine feed—**pixelation, drift, and noise** are compositional, not accidental “quality” failures.
-- **Tactical media**: the piece runs on **ordinary phones** and a **shared marker**, privileging reproducible, low-friction distribution over closed AR platforms.
 
 ## Project
 
